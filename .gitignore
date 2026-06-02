@@ -1,6 +1,7 @@
 # 项目配置目录（不提交）
 .github/
 .vscode/
+doc/
 
 # Python
 __pycache__/

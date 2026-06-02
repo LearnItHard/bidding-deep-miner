@@ -84,8 +84,6 @@ bidding-deep-miner/
 │   └── urls/
 │       ├── __init__.py             # 招投标平台 URL 注册表 & 构建器
 │       └── ...                     # 平台 URL 数据源
-├── doc/
-│   └── design.md                   # 架构设计文档
 ├── references/                     # Agent 参考指令集
 │   ├── agent-continuity.md         # Agent 连续性设置
 │   ├── evidence-grading.md         # 证据可信度分级
