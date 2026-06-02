@@ -57,26 +57,29 @@ python main.py "项目名称" -o report.md
 
 ```
 bidding-deep-miner/
+├── .gitignore                      # Git 忽略规则
 ├── SKILL.md                        # Skill 定义（用于 Claude Code / OpenClaw）
 ├── README.md                       # 本文件
-├── requirements.txt
-├── main.py                         # CLI 入口
-├── bidding_miner/
-│   ├── __init__.py
-│   ├── state.py                    # 共享状态定义
-│   ├── agents.py                   # 4 个 Agent 实现
-│   ├── graph.py                    # LangGraph 工作流
-│   ├── tools.py                    # 工具函数
-│   ├── config.py                   # LLM + 搜索引擎配置
-│   ├── fetch.py                    # 网页抓取
-│   ├── search_engine.py            # 搜索引擎回退
+├── requirements.txt                # 运行时依赖（requests, bs4, crawl4ai）
+├── bidding_miner/                  # Python 工具包
+│   ├── __init__.py                 # 包入口，版本 0.1.0
+│   ├── fetch.py                    # 网页抓取（Crawl4AI 延迟导入，自动降级）
+│   ├── search_engine.py            # 搜索引擎（DuckDuckGo HTML 直抓）
 │   └── urls/
-│       ├── __init__.py             # URL 数据源（优先复用 deep-research-agent）
-│       └── ...                     # 招投标平台 URL 库
-├── examples/
-│   └── quick_start.py
-└── doc/
-    └── design.md
+│       ├── __init__.py             # 招投标平台 URL 注册表 & 构建器
+│       └── ...                     # 平台 URL 数据源
+├── doc/
+│   └── design.md                   # 架构设计文档
+├── references/                     # Agent 参考指令集
+│   ├── agent-continuity.md         # Agent 连续性设置
+│   ├── evidence-grading.md         # 证据可信度分级
+│   ├── progress-reporting.md       # 进度汇报规范
+│   └── search-strategy.md          # 搜索策略指南
+└── templates/                      # 挖掘流程模板
+    ├── findings.md                 # 进化叙事综合模板
+    ├── mining-log.md               # 决策时间线模板
+    ├── mining-state.yaml           # 中央状态追踪模板
+    └── report-template.md          # 最终报告模板
 ```
 
 ## 作为 Claude Code / OpenClaw Skill 使用

@@ -1,7 +1,4 @@
-"""招投标 URL 资源清单 — 复用 deep-research-agent 的数据源。
-
-如果 deep-research-agent 项目存在，则直接引用其中的数据；
-否则提供内置的常用平台列表作为回退。
+"""招投标 URL 资源注册表 — 平台 URL 构建器 + 内置回退列表。"""
 """
 
 from __future__ import annotations
