@@ -79,16 +79,6 @@ bidding-deep-miner/
     └── design.md
 ```
 
-## 与 deep-research-agent 的关系
-
-本 Skill **优先复用** `deep-research-agent` 的基础设施：
-- LLM 配置（SiliconFlow API）
-- 搜索引擎（4 引擎全并行）
-- 网页抓取（Crawl4AI）
-- 招投标 URL 库（国家级 + 省市级 + 政府采购）
-
-如果 `deep-research-agent` 项目不可用，会自动回退到内置的简易实现。
-
 ## 作为 Claude Code / OpenClaw Skill 使用
 
 将本目录放入 `.claude/skills/` 或 `~/.claude/skills/` 后，直接对话触发：
