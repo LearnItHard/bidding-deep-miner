@@ -13,44 +13,60 @@ Bidding Deep Miner 会自动完成这个挖掘过程。
 
 ## 工作流程
 
+Skill 采用**双循环架构**，自主完成挖掘全流程：
+
 ```
-项目名称/编号
-    ↓
-┌─ Collector ─────────────────────────────┐
-│  招投标平台  ·  通用搜索  ·  学术搜索    │
-└──────────────────┬──────────────────────┘
-                   ↓
-┌─ Extractor ─────────────────────────────┐
-│  技术关键词提取  ·  证据分类  ·  可信度  │
-└──────────────────┬──────────────────────┘
-                   ↓
-┌─ Analyzer ──────────────────────────────┐
-│  多源交叉验证  ·  工艺推理  ·  置信度评估 │
-└──────┬───────────────────────────────────┘
-       ↓ (置信度 < 0.7 则迭代再搜索)
-┌─ Reporter ──────────────────────────────┘
-│  结构化深度挖掘报告
-↓
-📄 最终报告（含证据链、置信度、建议下一步）
+BOOTSTRAP（一次，轻量）
+  解析项目 → 确定搜索渠道 → 形成搜索假设
+
+内环（快速，自主，重复）
+  选择渠道 → 执行搜索 → 抓取页面 → 提取信息 → 记录 → 下一轮
+
+外环（周期，反思）
+  审查证据 → 交叉验证 → 更新 findings.md →
+  判断置信度 → 决定方向（深入/扩展/转向/结论）
+
+FINALIZE（结束时）
+  生成最终报告 → 归档
 ```
+
+内环执行紧密的搜索-提取循环，外环退一步综合推理。置信度 ≥ 0.7 时输出结论。
 
 ## 快速开始
 
+### 作为 Skill 使用（推荐）
+
+将本仓库放入 Claude Code / OpenClaw 的 skills 目录：
+
 ```bash
-# 安装依赖
-pip install -r requirements.txt
+# 克隆到 skills 目录
+git clone https://github.com/LearnItHard/bidding-deep-miner.git \
+  ~/.claude/skills/bidding-deep-miner
+```
 
-# 直接运行
-python main.py "某市污水处理厂扩建工程"
+然后在对话中直接触发：
 
-# 带项目编号
-python main.py "某河流域水环境综合治理" --project-id HB2025084670010053
+```
+/bid-mine 某市污水处理厂扩建工程
+/bid-mine "某河流域水环境综合治理工程"
+```
 
-# 详细日志
-python main.py "项目名称" --verbose
+Agent 会自动执行搜索→提取→验证→推理→报告全流程。
 
-# 保存报告到文件
-python main.py "项目名称" -o report.md
+### 使用 Python 工具包
+
+`bidding_miner/` 中的 Python 模块可供 Agent 在挖掘过程中调用，也可独立使用：
+
+```python
+from bidding_miner.search_engine import SimpleSearchEngine
+from bidding_miner.urls import SearchableURL, build_search_url
+
+# 构建招标平台搜索 URL
+url = build_search_url(
+    SearchableURL(name="中国招标投标公共服务平台",
+                  base_url="https://bulletin.cebpubservice.com/",
+                  query_param="search"),
+    "污水处理厂扩建")
 ```
 
 ## 项目结构
@@ -82,14 +98,14 @@ bidding-deep-miner/
     └── report-template.md          # 最终报告模板
 ```
 
-## 作为 Claude Code / OpenClaw Skill 使用
+## 与普通搜索的区别
 
-将本目录放入 `.claude/skills/` 或 `~/.claude/skills/` 后，直接对话触发：
-
-```
-/bid-mine 某市污水处理厂扩建工程
-/bid-mine "某河流域水环境综合治理工程" --deep
-```
+| | 普通搜索 | Bidding Deep Miner |
+|--|---------|-------------------|
+| 输入 | 直接搜项目名 | 项目名 → 多渠道搜索 → 推理 |
+| 深度 | 搜到公告原文为止 | 提取技术关键词 → 交叉验证 |
+| 结论 | 自行阅读判断 | 结构化报告 + 证据链 + 置信度 |
+| 迭代 | 无 | 置信度不够自动发起新一轮搜索 |
 
 ## 证据可信度分级
 
