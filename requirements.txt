@@ -1,0 +1,9 @@
+# Bidding Deep Miner 依赖
+# 仅保留 Agent 通过 run_in_terminal 调用的工具脚本所需依赖
+
+# 网络请求 + HTML 解析（search_engine.py）
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+
+# 智能网页抓取 — JS 渲染 + BM25 内容过滤（fetch.py）
+crawl4ai>=0.4.0

@@ -1,0 +1,58 @@
+# Mining State — 招投标项目挖掘中央状态追踪
+# 复制此模板到工作目录，由 Agent 在每个阶段后更新。
+
+project:
+  name: ""                          # 项目名称
+  id: ""                            # 项目编号（可选）
+  status: active                    # active | paused | concluded
+  started: ""                       # ISO 日期
+  domain: ""                        # 领域，如 "污水处理"、"路桥工程"
+
+search:
+  phase: bootstrap                  # bootstrap | collecting | extracting | analyzing | reporting
+  iteration: 0                      # 当前迭代轮次
+  max_iterations: 3                 # 最大迭代次数
+  channels_used: []                 # 已使用的搜索渠道
+  # - channel: bidding
+  #   platform: "全国公共资源交易平台"
+  #   queries: ["项目名称"]
+  #   result_count: 5
+  keywords_tried: []                # 已尝试的搜索关键词
+  keywords_discovered: []           # 搜索中发现的新关键词
+
+evidence:
+  items: []                         # 提取的证据项列表
+  # - source: "招标公告"
+  #   source_type: "bidding"
+  #   url: "https://..."
+  #   confidence: "P1"
+  #   content: "采用A²O+深度处理工艺"
+  #   tech_keywords: ["A²O", "深度处理"]
+  total_count: 0
+  by_confidence:                    # 按可信度统计
+    P1: 0
+    P2: 0
+    P3: 0
+    P4: 0
+    P5: 0
+
+analysis:
+  inferred_technology: ""           # 推断出的工艺/技术方案
+  confidence: 0.0                   # 置信度 0-1
+  tech_candidates: {}               # 候选工艺 → 支持证据数
+  # "A²O": 3, "MBR": 1, "SBR": 0
+  excluded_technologies: []         # 已排除的工艺及原因
+  contradictions: []                # 发现的矛盾点
+  analysis_notes: ""                # 分析推理过程摘要
+
+outer_loop:
+  cycle: 0                          # 外环综合次数
+  last_decision: null               # deepen | broaden | pivot | conclude
+  last_reflection: ""               # 上次反思的决策摘要
+
+workspace:
+  findings: "findings.md"
+  log: "mining-log.md"
+  searches_dir: "searches/"
+  evidence_dir: "evidence/"
+  reports_dir: "reports/"
